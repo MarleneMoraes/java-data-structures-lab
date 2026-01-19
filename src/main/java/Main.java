@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 import model.Match;
+import model.Player;
 import model.TVShow;
 
 public class Main {
@@ -23,6 +24,9 @@ public class Main {
 		case "2":
 			processMatches(scan);
 			break;
+		case "3":
+            processPlayers(scan);
+            break;
 		default:
 			System.out.println("Invalid option.");
 			break;
@@ -90,6 +94,30 @@ public class Main {
 				System.err.println("Error: " + e.getMessage());
 			}
 		}
+	}
+	
+	private static void processPlayers(Scanner scan) {
+	    if (scan.hasNextLine()) {
+	        try {
+	            int qtdPlayers = Integer.parseInt(scan.nextLine());
+	            Player[] players = new Player[qtdPlayers];
+
+
+	            for (int i = 0; i < qtdPlayers; i++) {
+	                if (scan.hasNextLine()) {
+	                    String input = scan.nextLine();
+	                    players[i] = Player.read(input);
+	                }
+	            }
+
+	            System.out.println("\n--- NBA PLAYERS LIST ---");
+	            for (Player p : players) {
+	                if (p != null) p.print();
+	            }
+	        } catch (Exception e) {
+	            System.err.println("Player Data Error: " + e.getMessage());
+	        }
+	    }
 	}
 
 }
