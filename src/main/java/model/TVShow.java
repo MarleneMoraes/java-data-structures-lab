@@ -1,6 +1,6 @@
 package model;
 
-public class TVShow {
+public class TVShow implements Cloneable {
 	private String name;
 	private String format;
 	private String duration;
