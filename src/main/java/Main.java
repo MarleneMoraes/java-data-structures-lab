@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 import model.Match;
 import model.Player;
-import model.TVShow;
+import repository.TVShowRepository;
 
 public class Main {
 
@@ -36,28 +36,20 @@ public class Main {
 	}
 
 	private static void processTVShows(Scanner scan) {
+		TVShowRepository repository = new TVShowRepository(1000);
+		repository.loadFromFile("src/main/java/data/tv-series-data.txt", true);
+		
 		if (scan.hasNextLine()) {
-			String qtdTVShowInput = scan.nextLine();
+			String qtdTVShowSearch = scan.nextLine();
 
 			try {
-				int qtdTVShow = Integer.parseInt(qtdTVShowInput);
-				TVShow[] tvShows = new TVShow[qtdTVShow];
+				int qtdSearch = Integer.parseInt(qtdTVShowSearch);
 
-				if (scan.hasNextLine()) {
-					scan.nextLine(); // skip header
-				}
-
-				for (int i = 0; i < qtdTVShow; i++) {
+				System.out.println("\n--- FIND TV SHOWS ---");
+				for (int i = 0; i < qtdSearch; i++) {
 					if (scan.hasNextLine()) {
-						String input = scan.nextLine();
-						tvShows[i] = TVShow.read(input);
-					}
-				}
-
-				System.out.println("\n--- REGISTERED TV SHOWS ---");
-				for (TVShow tvShow : tvShows) {
-					if (tvShow != null) {
-						tvShow.print();
+						repository.print(
+								repository.find(scan.nextLine()));
 					}
 				}
 
