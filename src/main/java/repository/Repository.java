@@ -4,12 +4,11 @@ import java.io.File;
 import java.util.Scanner;
 
 public abstract class Repository<T> {
-    protected T[] database;
+    protected Object[] database;
     protected int count;
 
-    @SuppressWarnings("unchecked")
     public Repository(int maxSize) {
-        this.database = (T[]) new Object[maxSize];
+        this.database = new Object[maxSize];
         this.count = 0;
     }
 
