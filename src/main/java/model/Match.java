@@ -86,38 +86,6 @@ public class Match implements Cloneable {
 		return (Match) super.clone();
 	}
 
-	public static Match read(String line) {
-		if (line == null || line.trim().isEmpty()) {
-			throw new IllegalArgumentException("Line cannot be null or empty");
-		}
-
-		String[] data = line.split("#");
-
-		if (data.length < 9) {
-			throw new IllegalArgumentException("Invalid match data format.");
-		}
-
-		try {
-			return new Match(LocalDate.of(
-					Integer.parseInt(data[0].trim()), // year
-					Integer.parseInt(data[3].trim()), // month
-					Integer.parseInt(data[2].trim())), // day
-					data[1].trim(),
-					data[4].trim(),
-					data[7].trim(),
-					Integer.parseInt(data[5].trim()),
-					Integer.parseInt(data[6].trim()),
-					data[8].trim()
-			);
-		} catch (Exception e) {
-			throw new IllegalArgumentException("Error parsing Match data: " + e.getMessage());
-		}
-	}
-
-	public void print() {
-		System.out.println(this.toString());
-	}
-
 	@Override
 	public String toString() {
 		return String.format(

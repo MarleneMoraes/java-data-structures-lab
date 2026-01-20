@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
-import model.Match;
 import model.Player;
+import repository.MatchRepository;
 import repository.TVShowRepository;
 
 public class Main {
@@ -63,28 +63,27 @@ public class Main {
 	}
 
 	private static void processMatches(Scanner scan) {
+		MatchRepository repository = new MatchRepository(1000);
+		repository.loadFromFile("src/main/java/data/matches-data.txt", false);
+		
 		if (scan.hasNextLine()) {
+			String qtdMatchSearch = scan.nextLine();
+			
 			try {
-				String qtdInput = scan.nextLine();
-				int qtdMatches = Integer.parseInt(qtdInput);
-				Match[] matches = new Match[qtdMatches];
+				int qtdMatches = Integer.parseInt(qtdMatchSearch);
 
+				System.out.println("\n--- FIND MATCHES ---");
 				for (int i = 0; i < qtdMatches; i++) {
 					if (scan.hasNextLine()) {
-						String input = scan.nextLine();
-						matches[i] = Match.read(input);
+						repository.print(
+								repository.find(scan.nextLine()));
 					}
 				}
-
-				System.out.println("\n--- WORLD CUP MATCHES ---");
-				for (Match match : matches) {
-					if (match != null) {
-						match.print();
-					}
-				}
-			} catch (Exception e) {
-				System.err.println("Error: " + e.getMessage());
-			}
+			} catch (NumberFormatException e) {
+	            System.err.println("Error: The quantity must be a valid number.");
+	        } catch (Exception e) {
+	            System.err.println("Unexpected error: " + e.getMessage());
+	        }
 		}
 	}
 	
