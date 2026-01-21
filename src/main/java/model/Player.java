@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Optional;
-
 public class Player implements Cloneable {
 
 	private int id;
@@ -86,43 +84,10 @@ public class Player implements Cloneable {
 	public String getBirthState() {
 		return birthState;
 	}
-
+	
 	public void setBirthState(String birthState) {
 		this.birthState = birthState;
 	}
-	
-	private static String validateString(String value) {
-        return Optional.ofNullable(value)
-                       .filter(s -> !s.trim().isEmpty())
-                       .orElse("no info");
-    }
-
-    private static int validateInt(String value) {
-        return (value == null || value.trim().isEmpty()) ? -1 : Integer.parseInt(value.trim());
-    }
-    
-    private static double validateDouble(String value) {
-        return (value == null || value.trim().isEmpty()) ? -1.0 : Double.parseDouble(value.trim());
-    }
-
-	public static Player read(String line) {
-        String[] data = line.split(",", -1);
-
-        try {
-            Player p = new Player();
-            p.id = Integer.parseInt(data[0].trim());
-            p.name = validateString(data[1]);
-            p.height = validateDouble(data[2]);
-            p.weight = validateDouble(data[3]);
-            p.university = validateString(data[4]);
-            p.birthYear = validateInt(data[5]);
-            p.birthCity = validateString(data[6]);
-            p.birthState = validateString(data.length > 7 ? data[7] : "");
-            return p;
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Error parsing Player: " + e.getMessage());
-        }
-    }
 
 	@Override
 	public String toString() {
@@ -143,9 +108,5 @@ public class Player implements Cloneable {
     @Override
     public Player clone() throws CloneNotSupportedException {
         return (Player) super.clone();
-    }
-    
-    public void print() {
-        System.out.println(this.toString());
     }
 }

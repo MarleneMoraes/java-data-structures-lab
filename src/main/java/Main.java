@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
-import model.Player;
 import repository.MatchRepository;
+import repository.PlayerRepository;
 import repository.TVShowRepository;
 
 public class Main {
@@ -36,7 +36,7 @@ public class Main {
 	}
 
 	private static void processTVShows(Scanner scan) {
-		TVShowRepository repository = new TVShowRepository(1000);
+		TVShowRepository repository = new TVShowRepository(100);
 		repository.loadFromFile("src/main/java/data/tv-series-data.txt", true);
 		
 		if (scan.hasNextLine()) {
@@ -88,26 +88,25 @@ public class Main {
 	}
 	
 	private static void processPlayers(Scanner scan) {
-	    if (scan.hasNextLine()) {
-	        try {
-	            int qtdPlayers = Integer.parseInt(scan.nextLine());
-	            Player[] players = new Player[qtdPlayers];
+		PlayerRepository repository = new PlayerRepository(4000);
+		repository.loadFromFile("src/main/java/data/players-data.txt", true);
+		
 
-
-	            for (int i = 0; i < qtdPlayers; i++) {
-	                if (scan.hasNextLine()) {
-	                    String input = scan.nextLine();
-	                    players[i] = Player.read(input);
-	                }
+	    try {
+	    	System.out.println("\n--- FIND NBA PLAYERS ---");
+	        while (scan.hasNextLine()) {
+	            String input = scan.nextLine().trim();
+	            
+	            if (input.equalsIgnoreCase("FIM")) {
+	                break;
 	            }
-
-	            System.out.println("\n--- NBA PLAYERS LIST ---");
-	            for (Player p : players) {
-	                if (p != null) p.print();
+	            
+	            if (!input.isEmpty()) {
+	                repository.print(repository.find(input));
 	            }
-	        } catch (Exception e) {
-	            System.err.println("Player Data Error: " + e.getMessage());
 	        }
+	    } catch (Exception e) {
+	        System.err.println("Player Data Error: " + e.getMessage());
 	    }
 	}
 
