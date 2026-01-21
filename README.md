@@ -4,7 +4,7 @@ This project is an evolutionary laboratory of Data Structures and Algorithms in 
 
 ## Development Journey
 - [X] Phase 01: OOP & Models
-- [ ] **Phase 02: File Input/Output & Parsing**
+- [X] **Phase 02: File Input/Output & Parsing**
 - [ ] Phase 03: Sorting Algorithms
 - [ ] Phase 04: Linear Data Structures
 - [ ] Phase 05: Non-Linear Structures (Trees)
