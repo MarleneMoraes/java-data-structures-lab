@@ -75,29 +75,43 @@ public class Main {
 	}
 
 	private static void processMatches(Scanner scan) {
-		MatchRepository repository = new MatchRepository(1000);
+		MatchRepository repository = new MatchRepository();
 		repository.loadFromFile("src/main/java/data/matches-data.txt", false);
 		
 		if (scan.hasNextLine()) {
-String qtdMatchSearch = scan.nextLine();
 
 			try {
-				int qtdMatches = Integer.parseInt(qtdMatchSearch);
+				int qtdMatches = Integer.parseInt(scan.nextLine().trim());
 				
-				System.out.println("\n--- FIND MATCHES ---");
+				List<Match> foundMatches = new ArrayList<>();
+
 				for (int i = 0; i < qtdMatches; i++) {
-					if (scan.hasNextLine()) {
-						repository.print(
-repository.find(scan.nextLine()));
-			    }
-}				
+					Match findMatch = repository.find(scan.nextLine().trim());
+					
+					if (findMatch != null) {
+						foundMatches.add(findMatch);
+					}
+				}
+				
+				if(foundMatches.isEmpty()) {
+					System.out.println("No matches were found with the provided criteria.");
+				} else {
+					repository.selectionSort(foundMatches);
+					
+					System.out.println("\n--- FIFA MATCHES (Sorted by Selection/Date) ---");
+					for (Match match : foundMatches) {
+						repository.print(match);
+					}					
+				}
+				
 			} catch (NumberFormatException e) {
 	            System.err.println("Error: The quantity must be a valid number.");
 	        } catch (Exception e) {
-	            System.err.println("Unexpected error: " + e.getMessage());
+	        	System.err.println("Unexpected error: " + (e.getMessage() != null ? e.getMessage() : "Internal failure"));
 	        }
 		}
 	}
+	
 	
 	private static void processPlayers(Scanner scan) {
 		PlayerRepository repository = new PlayerRepository(4000);

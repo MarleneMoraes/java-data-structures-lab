@@ -6,8 +6,8 @@ import model.Match;
 
 public final class MatchRepository extends Repository<Match> {
 
-	public MatchRepository(int maxSize) {
-		super(maxSize);
+	public MatchRepository() {
+		super();
 	}
 
 	@Override
@@ -48,27 +48,24 @@ public final class MatchRepository extends Repository<Match> {
 	public Match find(String match) {
 		
 		String[] matchData = match.split(";");
+		if (matchData.length < 2) return null;
+		
 		String[] dateData = matchData[0].split("/");
-		String teamMatch = matchData[1];
+		String teamMatch = matchData[1].trim();
 
 		LocalDate dateCurrent = LocalDate.of(
-				Integer.parseInt(dateData[2].trim()),
-				Integer.parseInt(dateData[1].trim()), 
-				Integer.parseInt(dateData[0].trim()));
+				Integer.parseInt(dateData[2].trim()), // year
+				Integer.parseInt(dateData[1].trim()), // month
+				Integer.parseInt(dateData[0].trim())); //day
 
-		for (int i = 0; i < this.count; i++) {
-
-			// Match casting
-			Match matchCurrent = (Match) this.database[i];
-
-
-			if (matchCurrent != null && 
-					matchCurrent.getDate().equals(dateCurrent) &&
-					(matchCurrent.getHomeTeam().equalsIgnoreCase(teamMatch) || 
-					matchCurrent.getAwayTeam().equalsIgnoreCase(teamMatch))) {
+		for (Match matchCurrent : database) {
+			if (matchCurrent.getDate().equals(dateCurrent) &&
+				(matchCurrent.getHomeTeam().equalsIgnoreCase(teamMatch) || 
+				 matchCurrent.getAwayTeam().equalsIgnoreCase(teamMatch))) {
 				return matchCurrent;
-			}
+			}			
 		}
+		
 		return null;
 
 	}

@@ -2,7 +2,7 @@ package model;
 
 import java.time.LocalDate;
 
-public class Match implements Cloneable {
+public class Match implements Cloneable, Comparable<Match>  {
 	private LocalDate date;
 	private String stage;
 	private String homeTeam;
@@ -93,5 +93,21 @@ public class Match implements Cloneable {
                 date.getYear(), stage, date.getDayOfMonth(), date.getMonthValue(),
                 homeTeam, homeScore, awayScore, awayTeam, venue);
 	}
+
+	@Override
+	public int compareTo(Match other) {
+	    int result = this.homeTeam.compareTo(other.getHomeTeam());
+	    if (result != 0) return result;
+
+	    if (this.date.getYear() != other.date.getYear()) {
+	        return Integer.compare(this.date.getYear(), other.date.getYear());
+	    }
+
+	    if (this.date.getDayOfMonth() != other.date.getDayOfMonth()) {
+	        return Integer.compare(this.date.getDayOfMonth(), other.date.getDayOfMonth());
+	    }
+
+	    return Integer.compare(this.date.getMonthValue(), other.date.getMonthValue());
+	}	
 	
 }
