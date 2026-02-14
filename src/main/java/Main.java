@@ -152,7 +152,7 @@ public class Main {
 
 	private static String getSelectedAlgorithm(Scanner scan) {
 	    System.out.println("\nSelect Sorting Algorithm:");
-	    System.out.println("1 - Selection | 2 - Insertion");
+	    System.out.println("1 - Selection | 2 - Insertion | 3 - Bubble");
 	    System.out.print("Option: ");
 	    
 	    String sortOption = scan.nextLine().trim();
@@ -160,6 +160,7 @@ public class Main {
 	    switch (sortOption) {
 	    	case "1": return "selection";
 	        case "2": return "insertion";
+	        case "3": return "bubble";
 	        default:  return "";
 	    }
 	}
