@@ -1,6 +1,6 @@
 package model;
 
-public class Player implements Cloneable {
+public class Player implements Cloneable, Comparable<Player> {
 
 	private int id;
     private String name;
@@ -109,4 +109,9 @@ public class Player implements Cloneable {
     public Player clone() throws CloneNotSupportedException {
         return (Player) super.clone();
     }
+
+	@Override
+	public int compareTo(Player other) {
+		return this.getName().compareTo(other.getName());
+	}
 }

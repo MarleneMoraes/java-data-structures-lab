@@ -6,8 +6,8 @@ import model.Player;
 
 public final class PlayerRepository extends Repository<Player> {
 
-	public PlayerRepository(int maxSize) {
-		super(maxSize);
+	public PlayerRepository() {
+		super();
 	}
 	
 	private static String validateString(String value) {
@@ -54,14 +54,11 @@ public final class PlayerRepository extends Repository<Player> {
 	public Player find(String input) {
 		int id = Integer.parseInt(input.trim());
 
-		for (int i = 0; i < this.count; i++) {
+		for (Player player : database) {
 
-			// Player casting
-			Player playerCurrent = (Player) this.database[i];
-
-			if (playerCurrent != null && 
-					playerCurrent.getId() == id) {
-				return playerCurrent;
+			if (player != null && 
+					player.getId() == id) {
+				return player;
 			}
 		}
 

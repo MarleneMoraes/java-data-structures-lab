@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import model.Match;
+import model.Player;
 import model.TVShow;
 import repository.MatchRepository;
 import repository.PlayerRepository;
@@ -114,23 +115,36 @@ public class Main {
 	
 	
 	private static void processPlayers(Scanner scan) {
-		PlayerRepository repository = new PlayerRepository(4000);
+		PlayerRepository repository = new PlayerRepository();
 		repository.loadFromFile("src/main/java/data/players-data.txt", true);
 		
 
 	    try {
-	    	System.out.println("\n--- FIND NBA PLAYERS ---");
+	    	List<Player> foundPlayers = new ArrayList<>();
+	    	
 	        while (scan.hasNextLine()) {
 	            String input = scan.nextLine().trim();
 	            
 	            if (input.equalsIgnoreCase("FIM")) {
 	                break;
-	            }
-	            
-	            if (!input.isEmpty()) {
-	                repository.print(repository.find(input));
+	            } else if (!input.isEmpty()) {
+	            	Player findPlayer = repository.find(input);
+	            	if (findPlayer != null) {
+	            		foundPlayers.add(findPlayer);
+	            	}
 	            }
 	        }
+	        
+	        if(foundPlayers.isEmpty()) {
+				System.out.println("No players were found with this ids.");
+			} else {
+				repository.selectionSort(foundPlayers);
+				
+				System.out.println("\n--- NBA PLAYERS (sorted by Name) ---");
+				for (Player player : foundPlayers) {
+					repository.print(player);
+				}					
+			}
 	    } catch (Exception e) {
 	        System.err.println("Player Data Error: " + e.getMessage());
 	    }
