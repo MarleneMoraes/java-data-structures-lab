@@ -2,9 +2,10 @@ package repository;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+
+import utils.Sorts;
 
 public abstract class Repository<T extends Comparable<T>> {
     protected List<T> database = new ArrayList<>();
@@ -31,23 +32,18 @@ public abstract class Repository<T extends Comparable<T>> {
     
     public abstract T find(String criteria);
     
-    public void selectionSort() {
-        selectionSort(this.database);
-    }
-    
-    public void selectionSort(List<T> list) {
-        int n = list.size();
-        
-        for (int i = 0; i < n - 1; i++) {
-            int smallest = i;
-            
-            for (int j = i + 1; j < n; j++) {
-                if (list.get(j).compareTo(list.get(smallest)) < 0) {
-                    smallest = j;
-                }
-            }
+    public void sort(List<T> list, String algorithm) {
+        if (list == null || list.isEmpty()) return;
 
-            Collections.swap(list, i, smallest);
+        switch (algorithm.toLowerCase()) {
+            case "selection":
+                Sorts.selectionSort(list);
+                break;
+            case "insertion":
+                Sorts.insertionSort(list);
+                break;
+            default:
+                System.err.println("Algorithm not implemented.");
         }
     }
 }

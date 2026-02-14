@@ -59,7 +59,7 @@ public class Main {
 	                }
 	            }
 	            
-	            repository.selectionSort(foundShows);
+	            repository.sort(foundShows, getSelectedAlgorithm(scan));
 	            
 	            System.out.println("\n--- FIND TV SHOWS (Sorted by Name) ---");
 	            for (TVShow show : foundShows) {
@@ -97,7 +97,7 @@ public class Main {
 				if(foundMatches.isEmpty()) {
 					System.out.println("No matches were found with the provided criteria.");
 				} else {
-					repository.selectionSort(foundMatches);
+					repository.sort(foundMatches, getSelectedAlgorithm(scan));
 					
 					System.out.println("\n--- FIFA MATCHES (Sorted by Selection/Date) ---");
 					for (Match match : foundMatches) {
@@ -138,7 +138,7 @@ public class Main {
 	        if(foundPlayers.isEmpty()) {
 				System.out.println("No players were found with this ids.");
 			} else {
-				repository.selectionSort(foundPlayers);
+				repository.sort(foundPlayers, getSelectedAlgorithm(scan));
 				
 				System.out.println("\n--- NBA PLAYERS (sorted by Name) ---");
 				for (Player player : foundPlayers) {
@@ -150,4 +150,17 @@ public class Main {
 	    }
 	}
 
+	private static String getSelectedAlgorithm(Scanner scan) {
+	    System.out.println("\nSelect Sorting Algorithm:");
+	    System.out.println("1 - Selection | 2 - Insertion");
+	    System.out.print("Option: ");
+	    
+	    String sortOption = scan.nextLine().trim();
+	    
+	    switch (sortOption) {
+	    	case "1": return "selection";
+	        case "2": return "insertion";
+	        default:  return "";
+	    }
+	}
 }
