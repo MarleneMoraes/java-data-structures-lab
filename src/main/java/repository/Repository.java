@@ -1,16 +1,14 @@
 package repository;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 
-public abstract class Repository<T> {
-    protected Object[] database;
+public abstract class Repository<T extends Comparable<T>> {
+    protected List<T> database = new ArrayList<>();
     protected int count;
-
-    public Repository(int maxSize) {
-        this.database = new Object[maxSize];
-        this.count = 0;
-    }
 
     public final void loadFromFile(String path, boolean skipHeader) {
         try (Scanner sc = new Scanner(new File(path), "UTF-8")) {
@@ -22,7 +20,7 @@ public abstract class Repository<T> {
                 String line = sc.nextLine();
                 if (line.equalsIgnoreCase("FIM")) break;
                 
-                database[count++] = parseLine(line);
+                database.add(parseLine(line));
             }
         } catch (Exception e) {
             System.err.println("Erro no carregamento: " + e.getMessage());
@@ -32,4 +30,20 @@ public abstract class Repository<T> {
     protected abstract T parseLine(String line);
     
     public abstract T find(String criteria);
+    
+    public void selectionSort() {
+        int n = database.size();
+        
+        for (int i = 0; i < n - 1; i++) {
+            int smallest = i;
+            
+            for (int j = i + 1; j < n; j++) {
+                if (database.get(j).compareTo(database.get(smallest)) < 0) {
+                    smallest = j;
+                }
+            }
+
+            Collections.swap(database, i, smallest);
+        }
+    }
 }
