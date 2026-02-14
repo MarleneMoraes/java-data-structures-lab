@@ -1,6 +1,6 @@
 package model;
 
-public class TVShow implements Cloneable {
+public class TVShow implements Cloneable, Comparable<TVShow> {
 	private String name;
 	private String format;
 	private String duration;
@@ -110,5 +110,10 @@ public class TVShow implements Cloneable {
 				+ originalBroadcaster + " ## " + startDate + " ## " 
 				+ seasons + " ## " + episodes;
 	}
+
+	@Override
+    public int compareTo(TVShow other) {
+		return this.name.compareTo(other.getName());
+    }
 
 }

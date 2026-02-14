@@ -1,5 +1,9 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
+import model.Match;
+import model.TVShow;
 import repository.MatchRepository;
 import repository.PlayerRepository;
 import repository.TVShowRepository;
@@ -36,22 +40,30 @@ public class Main {
 	}
 
 	private static void processTVShows(Scanner scan) {
-		TVShowRepository repository = new TVShowRepository(100);
+		TVShowRepository repository = new TVShowRepository();
 		repository.loadFromFile("src/main/java/data/tv-series-data.txt", true);
 		
 		if (scan.hasNextLine()) {
-			String qtdTVShowSearch = scan.nextLine();
-
 			try {
-				int qtdSearch = Integer.parseInt(qtdTVShowSearch);
+				int qtdSearch = Integer.parseInt(scan.nextLine().trim());
+				List<TVShow> foundShows = new ArrayList<>();
 
-				System.out.println("\n--- FIND TV SHOWS ---");
-				for (int i = 0; i < qtdSearch; i++) {
-					if (scan.hasNextLine()) {
-						repository.print(
-								repository.find(scan.nextLine()));
-					}
-				}
+	            for (int i = 0; i < qtdSearch; i++) {
+	                if (scan.hasNextLine()) {
+	                    String nameToFind = scan.nextLine().trim();
+	                    TVShow show = repository.find(nameToFind);
+	                    if (show != null) {
+	                        foundShows.add(show);
+	                    }
+	                }
+	            }
+	            
+	            repository.selectionSort(foundShows);
+	            
+	            System.out.println("\n--- FIND TV SHOWS (Sorted by Name) ---");
+	            for (TVShow show : foundShows) {
+	                repository.print(show);
+	            }
 
 			} catch (NumberFormatException e) {
 				System.err.println("Error: The first line must be a valid number.");
@@ -67,18 +79,18 @@ public class Main {
 		repository.loadFromFile("src/main/java/data/matches-data.txt", false);
 		
 		if (scan.hasNextLine()) {
-			String qtdMatchSearch = scan.nextLine();
-			
+String qtdMatchSearch = scan.nextLine();
+
 			try {
 				int qtdMatches = Integer.parseInt(qtdMatchSearch);
-
+				
 				System.out.println("\n--- FIND MATCHES ---");
 				for (int i = 0; i < qtdMatches; i++) {
 					if (scan.hasNextLine()) {
 						repository.print(
-								repository.find(scan.nextLine()));
-					}
-				}
+repository.find(scan.nextLine()));
+			    }
+}				
 			} catch (NumberFormatException e) {
 	            System.err.println("Error: The quantity must be a valid number.");
 	        } catch (Exception e) {

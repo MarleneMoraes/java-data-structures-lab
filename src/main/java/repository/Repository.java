@@ -32,18 +32,22 @@ public abstract class Repository<T extends Comparable<T>> {
     public abstract T find(String criteria);
     
     public void selectionSort() {
-        int n = database.size();
+        selectionSort(this.database);
+    }
+    
+    public void selectionSort(List<T> list) {
+        int n = list.size();
         
         for (int i = 0; i < n - 1; i++) {
             int smallest = i;
             
             for (int j = i + 1; j < n; j++) {
-                if (database.get(j).compareTo(database.get(smallest)) < 0) {
+                if (list.get(j).compareTo(list.get(smallest)) < 0) {
                     smallest = j;
                 }
             }
 
-            Collections.swap(database, i, smallest);
+            Collections.swap(list, i, smallest);
         }
     }
 }

@@ -4,8 +4,8 @@ import model.TVShow;
 
 public final class TVShowRepository extends Repository<TVShow> {
 
-	public TVShowRepository(int maxSize) {
-		super(maxSize);
+	public TVShowRepository() {
+		super();
 	}
 
 	@Override
@@ -44,14 +44,10 @@ public final class TVShowRepository extends Repository<TVShow> {
 	
 	@Override
 	public TVShow find(String name) {		
-		for (int i = 0; i < this.count; i++) {
-			
-			// TVShow casting
-			TVShow tvShowCurrent = (TVShow) this.database[i];
-		    
-			if(tvShowCurrent != null && 
-					tvShowCurrent.getName().equalsIgnoreCase(name))
-		        return tvShowCurrent;
+		for (TVShow tvShow : database) {
+			if(tvShow != null && 
+				tvShow.getName().equalsIgnoreCase(name))
+		        return tvShow;
 		 }
 		return null;
 	}
