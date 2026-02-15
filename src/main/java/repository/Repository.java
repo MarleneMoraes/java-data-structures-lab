@@ -45,6 +45,12 @@ public abstract class Repository<T extends Comparable<T>> {
             case "bubble":
                 Sorts.bubbleSort(list);
                 break;
+            case "quick": 
+            	Sorts.quickSort(list); 
+            	break;
+            case "merge": 
+            	Sorts.mergeSort(list); 
+            	break;
             default:
                 System.err.println("Algorithm not implemented.");
         }

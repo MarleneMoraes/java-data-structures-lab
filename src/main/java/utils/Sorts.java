@@ -1,10 +1,11 @@
 package utils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class Sorts {
-	
+
 	// SELECTION SORT
 	public static <T extends Comparable<T>> void selectionSort(List<T> list) {
 		int n = list.size();
@@ -32,7 +33,7 @@ public class Sorts {
 			list.set(j + 1, tmp);
 		}
 	}
-	
+
 	// BUBBLE SORT
 	public static <T extends Comparable<T>> void bubbleSort(List<T> list) {
 		int n = list.size();
@@ -71,5 +72,41 @@ public class Sorts {
 		}
 		Collections.swap(list, i + 1, right);
 		return i + 1;
+	}
+
+	// MERGE SORT
+	public static <T extends Comparable<T>> void mergeSort(List<T> list) {
+		if (list.size() > 1) {
+			List<T> sorted = performMergeSort(list);
+			for (int i = 0; i < list.size(); i++) {
+				list.set(i, sorted.get(i));
+			}
+		}
+	}
+
+	private static <T extends Comparable<T>> List<T> performMergeSort(List<T> list) {
+		if (list.size() <= 1)
+			return list;
+
+		int mid = list.size() / 2;
+		List<T> left = performMergeSort(new ArrayList<>(list.subList(0, mid)));
+		List<T> right = performMergeSort(new ArrayList<>(list.subList(mid, list.size())));
+
+		return merge(left, right);
+	}
+
+	private static <T extends Comparable<T>> List<T> merge(List<T> left, List<T> right) {
+		List<T> combined = new ArrayList<>();
+		int l = 0, r = 0;
+		while (l < left.size() && r < right.size()) {
+			if (left.get(l).compareTo(right.get(r)) <= 0) {
+				combined.add(left.get(l++));
+			} else {
+				combined.add(right.get(r++));
+			}
+		}
+		combined.addAll(left.subList(l, left.size()));
+		combined.addAll(right.subList(r, right.size()));
+		return combined;
 	}
 }
