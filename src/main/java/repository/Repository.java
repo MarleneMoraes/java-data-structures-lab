@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import utils.Sorts;
-
 public abstract class Repository<T extends Comparable<T>> {
     protected List<T> database = new ArrayList<>();
     protected int count;
@@ -32,30 +30,4 @@ public abstract class Repository<T extends Comparable<T>> {
     
     public abstract T find(String criteria);
     
-    public void sort(List<T> list, String algorithm) {
-        if (list == null || list.isEmpty()) return;
-
-        switch (algorithm.toLowerCase()) {
-            case "selection":
-                Sorts.selectionSort(list);
-                break;
-            case "insertion":
-                Sorts.insertionSort(list);
-                break;
-            case "bubble":
-                Sorts.bubbleSort(list);
-                break;
-            case "quick": 
-            	Sorts.quickSort(list); 
-            	break;
-            case "merge": 
-            	Sorts.mergeSort(list); 
-            	break;
-            case "heap": 
-            	Sorts.heapSort(list);
-            	break;
-            default:
-                System.err.println("Algorithm not implemented.");
-        }
-    }
 }
