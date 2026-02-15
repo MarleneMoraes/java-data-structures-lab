@@ -109,4 +109,38 @@ public class Sorts {
 		combined.addAll(right.subList(r, right.size()));
 		return combined;
 	}
+	
+	// HEAP SORT
+    public static <T extends Comparable<T>> void heapSort(List<T> list) {
+        int n = list.size();
+
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            heapify(list, n, i);
+        }
+
+        for (int i = n - 1; i > 0; i--) {
+            Collections.swap(list, 0, i);
+            heapify(list, i, 0);
+        }
+    }
+
+    private static <T extends Comparable<T>> void heapify(List<T> list, int n, int i) {
+        int largest = i;
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
+
+        if (left < n) {
+            if (list.get(left).compareTo(list.get(largest)) > 0) largest = left;
+        }
+
+        if (right < n) {
+            if (list.get(right).compareTo(list.get(largest)) > 0) largest = right;
+        }
+
+        if (largest != i) {
+            Collections.swap(list, i, largest);
+            heapify(list, n, largest);
+        }
+    }
+	
 }

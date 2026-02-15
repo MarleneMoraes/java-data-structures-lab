@@ -51,6 +51,9 @@ public abstract class Repository<T extends Comparable<T>> {
             case "merge": 
             	Sorts.mergeSort(list); 
             	break;
+            case "heap": 
+            	Sorts.heapSort(list);
+            	break;
             default:
                 System.err.println("Algorithm not implemented.");
         }

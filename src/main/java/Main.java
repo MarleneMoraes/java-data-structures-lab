@@ -15,9 +15,7 @@ public class Main {
 		Scanner scan = new Scanner(System.in, "UTF-8");
 
 		System.out.println("Select the Domain to test:");
-		System.out.println("1 - TV Shows (Series)");
-		System.out.println("2 - FIFA Matches");
-		System.out.println("3 - NBA Players");
+		System.out.println("1 - TV Shows (Series) | 2 - FIFA Matches | 3 - NBA Players");
 		System.out.print("Option: ");
 
 		String option = scan.nextLine();
@@ -152,7 +150,7 @@ public class Main {
 
 	private static String getSelectedAlgorithm(Scanner scan) {
 	    System.out.println("\nSelect Sorting Algorithm:");
-	    System.out.println("1 - Selection | 2 - Insertion | 3 - Bubble | 4 - Quick | 5 - Merge");
+	    System.out.println("1 - Selection | 2 - Insertion | 3 - Bubble | 4 - Quick | 5 - Merge | 6 - Heap");
 	    System.out.print("Option: ");
 	    
 	    String sortOption = scan.nextLine().trim();
@@ -163,6 +161,7 @@ public class Main {
 	        case "3": return "bubble";
 	        case "4": return "quick";
 	        case "5": return "merge";
+	        case "6": return "heap";
 	        default:  return "";
 	    }
 	}
