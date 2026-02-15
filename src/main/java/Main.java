@@ -57,12 +57,19 @@ public class Main {
 	                }
 	            }
 	            
-	            repository.sort(foundShows, getSelectedAlgorithm(scan));
-	            
-	            System.out.println("\n--- FIND TV SHOWS (Sorted by Name) ---");
-	            for (TVShow show : foundShows) {
-	                repository.print(show);
-	            }
+	            if(foundShows.isEmpty()) {
+					System.out.println("No TVShows were found with this name.");
+				} else {					
+					String algorithm = getSelectedAlgorithm(scan);
+					repository.sort(foundShows, algorithm);
+					
+					System.out.println("\n--- FIND TV SHOWS (Sorted by Name) ---");
+					for (TVShow show : foundShows) {
+						repository.print(show);
+					}
+					
+					generateLog(algorithm, utils.Sorts.lastComparisons, utils.Sorts.lastExecutionTime);
+				}
 
 			} catch (NumberFormatException e) {
 				System.err.println("Error: The first line must be a valid number.");
@@ -95,12 +102,15 @@ public class Main {
 				if(foundMatches.isEmpty()) {
 					System.out.println("No matches were found with the provided criteria.");
 				} else {
-					repository.sort(foundMatches, getSelectedAlgorithm(scan));
+					String algorithm = getSelectedAlgorithm(scan);
+					repository.sort(foundMatches, algorithm);
 					
 					System.out.println("\n--- FIFA MATCHES (Sorted by Selection/Date) ---");
 					for (Match match : foundMatches) {
 						repository.print(match);
-					}					
+					}
+					
+					generateLog(algorithm, utils.Sorts.lastComparisons, utils.Sorts.lastExecutionTime);
 				}
 				
 			} catch (NumberFormatException e) {
@@ -136,12 +146,14 @@ public class Main {
 	        if(foundPlayers.isEmpty()) {
 				System.out.println("No players were found with this ids.");
 			} else {
-				repository.sort(foundPlayers, getSelectedAlgorithm(scan));
+				String algorithm = getSelectedAlgorithm(scan);
+				repository.sort(foundPlayers, algorithm);
 				
 				System.out.println("\n--- NBA PLAYERS (sorted by Name) ---");
 				for (Player player : foundPlayers) {
 					repository.print(player);
-				}					
+				}
+				generateLog(algorithm, utils.Sorts.lastComparisons, utils.Sorts.lastExecutionTime);
 			}
 	    } catch (Exception e) {
 	        System.err.println("Player Data Error: " + e.getMessage());
@@ -163,6 +175,17 @@ public class Main {
 	        case "5": return "merge";
 	        case "6": return "heap";
 	        default:  return "";
+	    }
+	}
+	
+	private static void generateLog(String algorithm, int comparisons, long timeNano) {
+	    String fileName = "log.txt";
+	    try (java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.FileWriter(fileName, true))) {
+	        double timeMs = timeNano / 1_000_000.0;
+	        writer.printf("Algorithm: %s\tComparisons: %d\tTime: %.4fms%n", 
+	                      algorithm.toUpperCase(), comparisons, timeMs);
+	    } catch (java.io.IOException e) {
+	        System.err.println("Error generating log file: " + e.getMessage());
 	    }
 	}
 }
