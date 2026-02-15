@@ -1,6 +1,6 @@
 package model;
 
-public class Player implements Cloneable, Comparable<Player> {
+public class Player implements Cloneable, Comparable<Player>, Measurable {
 
 	private int id;
     private String name;
@@ -113,5 +113,10 @@ public class Player implements Cloneable, Comparable<Player> {
 	@Override
 	public int compareTo(Player other) {
 		return this.getName().compareTo(other.getName());
+	}
+	
+	@Override
+    public int getMeasurementValue() {
+        return (int) this.height;
 	}
 }

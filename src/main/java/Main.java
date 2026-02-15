@@ -132,37 +132,45 @@ public class Main {
 
 	private static void processPlayers(Scanner scan) {
 		PlayerRepository repository = new PlayerRepository();
-		repository.loadFromFile("src/main/java/data/players-data.txt", true);
+	    repository.loadFromFile("src/main/java/data/players-data.txt", true);
 
-		try {
-			List<Player> foundPlayers = new ArrayList<>();
+	    String input = scan.nextLine();
+	    while (!input.equals("FIM")) {
+	        Player found = repository.find(input);
+	        if (found != null) {
+	            repository.enqueueWithLimit(found, 5);
+	        }
+	        input = scan.nextLine();
+	    }
 
-			while (scan.hasNextLine()) {
-				String input = scan.nextLine().trim();
+	    try {
+	        if (scan.hasNextLine()) {
+	            int n = Integer.parseInt(scan.nextLine().trim());
+	            for (int i = 0; i < n; i++) {
+	                String line = scan.nextLine();
+	                String[] parts = line.split(" ", 2);
+	                String command = parts[0];
 
-				if (input.equalsIgnoreCase("FIM")) {
-					break;
-				} else if (!input.isEmpty()) {
-					Player findPlayer = repository.find(input);
-					if (findPlayer != null) {
-						foundPlayers.add(findPlayer);
-					}
-				}
-			}
+	                switch (command) {
+	                    case "I":
+	                        Player found = repository.find(parts[1]);
+	                        if (found != null) {
+	                            repository.enqueueWithLimit(found, 5);
+	                        }
+	                        break;
+	                    case "R":
+	                        repository.dequeue();
+	                        break;
+	                }
+	            }
+	        }
+	        repository.showQueue();
 
-			if (foundPlayers.isEmpty()) {
-				System.out.println("No players were found with this ids.");
-			} else {
-
-				System.out.println("\n--- NBA PLAYERS (sorted by Name) ---");
-				for (Player player : foundPlayers) {
-					repository.print(player);
-				}
-
-			}
-		} catch (Exception e) {
-			System.err.println("Player Data Error: " + e.getMessage());
-		}
+	    } catch (NumberFormatException e) {
+	        System.err.println("Error: The number of commands must be a valid integer.");
+	    } catch (Exception e) {
+	        System.err.println("Unexpected error: " + e.getMessage());
+	    }
 	}
 
 }
