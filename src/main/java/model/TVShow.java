@@ -1,6 +1,6 @@
 package model;
 
-public class TVShow implements Cloneable, Comparable<TVShow> {
+public class TVShow implements Cloneable, Comparable<TVShow>, Measurable {
 	private String name;
 	private String format;
 	private String duration;
@@ -11,7 +11,8 @@ public class TVShow implements Cloneable, Comparable<TVShow> {
 	private int seasons;
 	private int episodes;
 
-	public TVShow() { }
+	public TVShow() {
+	}
 
 	public TVShow(String name, String format, String duration, String countryOfOrigin, String originalLanguage,
 			String originalBroadcaster, String startDate, int seasons, int episodes) {
@@ -105,15 +106,18 @@ public class TVShow implements Cloneable, Comparable<TVShow> {
 
 	@Override
 	public String toString() {
-		return name + " ## " + format + " ## " + duration + " ## "
-				+ countryOfOrigin + " ## " + originalLanguage + " ## "
-				+ originalBroadcaster + " ## " + startDate + " ## " 
-				+ seasons + " ## " + episodes;
+		return name + " ## " + format + " ## " + duration + " ## " + countryOfOrigin + " ## " + originalLanguage
+				+ " ## " + originalBroadcaster + " ## " + startDate + " ## " + seasons + " ## " + episodes;
 	}
 
 	@Override
-    public int compareTo(TVShow other) {
+	public int compareTo(TVShow other) {
 		return this.name.compareTo(other.getName());
-    }
+	}
+
+	@Override
+	public int getMeasurementValue() {
+		return this.seasons;
+	}
 
 }

@@ -2,7 +2,7 @@ package model;
 
 import java.time.LocalDate;
 
-public class Match implements Cloneable, Comparable<Match>  {
+public class Match implements Cloneable, Comparable<Match>, Measurable {
 	private LocalDate date;
 	private String stage;
 	private String homeTeam;
@@ -11,7 +11,8 @@ public class Match implements Cloneable, Comparable<Match>  {
 	private int awayScore;
 	private String venue;
 
-	public Match() { }
+	public Match() {
+	}
 
 	public Match(LocalDate date, String stage, String homeTeam, String awayTeam, int homeScore, int awayScore,
 			String venue) {
@@ -88,26 +89,30 @@ public class Match implements Cloneable, Comparable<Match>  {
 
 	@Override
 	public String toString() {
-		return String.format(
-				"[COPA %d] [%s] [%02d/%02d] [%s (%d) x (%d) %s] [%s]",
-                date.getYear(), stage, date.getDayOfMonth(), date.getMonthValue(),
-                homeTeam, homeScore, awayScore, awayTeam, venue);
+		return String.format("[COPA %d] [%s] [%02d/%02d] [%s (%d) x (%d) %s] [%s]", date.getYear(), stage,
+				date.getDayOfMonth(), date.getMonthValue(), homeTeam, homeScore, awayScore, awayTeam, venue);
 	}
 
 	@Override
 	public int compareTo(Match other) {
-	    int result = this.homeTeam.compareTo(other.getHomeTeam());
-	    if (result != 0) return result;
+		int result = this.homeTeam.compareTo(other.getHomeTeam());
+		if (result != 0)
+			return result;
 
-	    if (this.date.getYear() != other.date.getYear()) {
-	        return Integer.compare(this.date.getYear(), other.date.getYear());
-	    }
+		if (this.date.getYear() != other.date.getYear()) {
+			return Integer.compare(this.date.getYear(), other.date.getYear());
+		}
 
-	    if (this.date.getDayOfMonth() != other.date.getDayOfMonth()) {
-	        return Integer.compare(this.date.getDayOfMonth(), other.date.getDayOfMonth());
-	    }
+		if (this.date.getDayOfMonth() != other.date.getDayOfMonth()) {
+			return Integer.compare(this.date.getDayOfMonth(), other.date.getDayOfMonth());
+		}
 
-	    return Integer.compare(this.date.getMonthValue(), other.date.getMonthValue());
-	}	
-	
+		return Integer.compare(this.date.getMonthValue(), other.date.getMonthValue());
+	}
+
+	@Override
+	public int getMeasurementValue() {
+		return this.homeScore + this.awayScore;
+	}
+
 }

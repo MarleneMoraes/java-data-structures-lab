@@ -47,86 +47,86 @@ public class Main {
 
 		if (scan.hasNextLine()) {
 			try {
-
-				Queue<TVShow> streamQueue = new ArrayDeque<>();
-
 				String input = scan.nextLine();
-
 				while (!input.equals("FIM")) {
 					TVShow found = repository.find(input);
 					if (found != null) {
-						StructureManager.enqueueWithLimit(streamQueue, found);
+						repository.enqueueWithLimit(found, 20);
 					}
 					input = scan.nextLine();
 				}
 
-				int numCommands = Integer.parseInt(scan.nextLine());
-				for (int i = 0; i < numCommands; i++) {
-					String line = scan.nextLine();
-					String[] parts = line.split(" ", 2);
-					String action = parts[0];
+				if (scan.hasNextLine()) {
+					int numCommands = Integer.parseInt(scan.nextLine());
+					for (int i = 0; i < numCommands; i++) {
+						String line = scan.nextLine();
+						String[] parts = line.split(" ", 2);
+						String action = parts[0];
 
-					switch (action) {
-					case "I":
-						TVShow found = repository.find(parts[1]);
-						if (found != null) {
-							StructureManager.enqueueWithLimit(streamQueue, found);
+						switch (action) {
+						case "I":
+							TVShow found = repository.find(parts[1]);
+							if (found != null) {
+								repository.enqueueWithLimit(found, 20);
+							}
+							break;
+						case "R":
+							repository.dequeue();
+							break;
 						}
-						break;
-					case "R":
-						if (!streamQueue.isEmpty()) {
-							TVShow removed = streamQueue.poll();
-							System.out.println("(R) " + removed.getName());
-						}
-						break;
 					}
 				}
 
+				repository.showQueue();
+
 			} catch (NumberFormatException e) {
-				System.err.println("Error: The first line must be a valid number.");
+				System.err.println("Error: The number of commands must be a valid integer.");
 			} catch (IllegalArgumentException e) {
 				System.err.println("Data error: " + e.getMessage());
 			}
-
 		}
 	}
 
 	private static void processMatches(Scanner scan) {
 		MatchRepository repository = new MatchRepository();
-		repository.loadFromFile("src/main/java/data/matches-data.txt", false);
+		repository.loadFromFile("src/main/java/data/partidas.txt", false);
 
-		if (scan.hasNextLine()) {
-
-			try {
-				int qtdMatches = Integer.parseInt(scan.nextLine().trim());
-
-				List<Match> foundMatches = new ArrayList<>();
-
-				for (int i = 0; i < qtdMatches; i++) {
-					Match findMatch = repository.find(scan.nextLine().trim());
-
-					if (findMatch != null) {
-						foundMatches.add(findMatch);
-					}
-				}
-
-				if (foundMatches.isEmpty()) {
-					System.out.println("No matches were found with the provided criteria.");
-				} else {
-
-					System.out.println("\n--- FIFA MATCHES (Sorted by Selection/Date) ---");
-					for (Match match : foundMatches) {
-						repository.print(match);
-					}
-
-				}
-
-			} catch (NumberFormatException e) {
-				System.err.println("Error: The quantity must be a valid number.");
-			} catch (Exception e) {
-				System.err
-						.println("Unexpected error: " + (e.getMessage() != null ? e.getMessage() : "Internal failure"));
+		String input = scan.nextLine();
+		while (!input.equals("FIM")) {
+			Match found = repository.find(input);
+			if (found != null) {
+				repository.enqueueWithLimit(found, 100);
 			}
+			input = scan.nextLine();
+		}
+
+		try {
+			if (scan.hasNextLine()) {
+				int n = Integer.parseInt(scan.nextLine().trim());
+				for (int i = 0; i < n; i++) {
+					String line = scan.nextLine();
+					String[] parts = line.split(" ", 2);
+					String command = parts[0];
+
+					switch (command) {
+					case "E":
+						Match found = repository.find(parts[1]);
+						if (found != null)
+							repository.enqueueWithLimit(found, 100);
+						break;
+					case "D":
+						repository.dequeue();
+						break;
+					}
+				}
+			}
+
+			repository.showQueue();
+
+		} catch (NumberFormatException e) {
+			System.err.println("Error: The quantity must be a valid number.");
+		} catch (Exception e) {
+			System.err.println("Unexpected error: " + e.getMessage());
 		}
 	}
 
